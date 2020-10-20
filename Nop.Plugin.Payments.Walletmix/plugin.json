@@ -1,0 +1,11 @@
+﻿{
+  "Group": "Payment methods",
+  "FriendlyName": "Walletmix",
+  "SystemName": "Payments.Walletmix",
+  "Version": "1.00",
+  "SupportedVersions": [ "4.10" ],
+  "Author": "Raihan Mahmud",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Payments.Walletmix.dll",
+  "Description": "This plugin allows paying with Walletmix"
+}
