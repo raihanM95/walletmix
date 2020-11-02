@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "F:\\Back-Up\\New folder\\trunk\\Plugins\\Nop.Plugin.Payments.Walletmix\\Nop.Plugin.Payments.Walletmix.csproj": {}
+    "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Plugins\\Nop.Plugin.Payments.Walletmix\\Nop.Plugin.Payments.Walletmix.csproj": {}
   },
   "projects": {
-    "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Core\\Nop.Core.csproj": {
+    "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Core\\Nop.Core.csproj": {
       "version": "4.1.0",
       "restore": {
-        "projectUniqueName": "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Core\\Nop.Core.csproj",
+        "projectUniqueName": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Core\\Nop.Core.csproj",
         "projectName": "Nop.Core",
-        "projectPath": "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Core\\Nop.Core.csproj",
+        "projectPath": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Core\\Nop.Core.csproj",
         "packagesPath": "C:\\Users\\raihan.DESKTOP-8UAKMR3\\.nuget\\packages\\",
-        "outputPath": "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Core\\obj\\",
+        "outputPath": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -94,14 +94,14 @@
         }
       }
     },
-    "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Data\\Nop.Data.csproj": {
+    "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Data\\Nop.Data.csproj": {
       "version": "4.1.0",
       "restore": {
-        "projectUniqueName": "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Data\\Nop.Data.csproj",
+        "projectUniqueName": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Data\\Nop.Data.csproj",
         "projectName": "Nop.Data",
-        "projectPath": "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Data\\Nop.Data.csproj",
+        "projectPath": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Data\\Nop.Data.csproj",
         "packagesPath": "C:\\Users\\raihan.DESKTOP-8UAKMR3\\.nuget\\packages\\",
-        "outputPath": "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Data\\obj\\",
+        "outputPath": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Data\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -120,8 +120,8 @@
         "frameworks": {
           "netcoreapp2.1": {
             "projectReferences": {
-              "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Core\\Nop.Core.csproj": {
-                "projectPath": "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Core\\Nop.Core.csproj"
+              "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Core\\Nop.Core.csproj": {
+                "projectPath": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Core\\Nop.Core.csproj"
               }
             }
           }
@@ -168,14 +168,14 @@
         }
       }
     },
-    "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Services\\Nop.Services.csproj": {
+    "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Services\\Nop.Services.csproj": {
       "version": "4.1.0",
       "restore": {
-        "projectUniqueName": "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Services\\Nop.Services.csproj",
+        "projectUniqueName": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Services\\Nop.Services.csproj",
         "projectName": "Nop.Services",
-        "projectPath": "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Services\\Nop.Services.csproj",
+        "projectPath": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Services\\Nop.Services.csproj",
         "packagesPath": "C:\\Users\\raihan.DESKTOP-8UAKMR3\\.nuget\\packages\\",
-        "outputPath": "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Services\\obj\\",
+        "outputPath": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Services\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -194,11 +194,11 @@
         "frameworks": {
           "netcoreapp2.1": {
             "projectReferences": {
-              "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Core\\Nop.Core.csproj": {
-                "projectPath": "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Core\\Nop.Core.csproj"
+              "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Core\\Nop.Core.csproj": {
+                "projectPath": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Core\\Nop.Core.csproj"
               },
-              "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Data\\Nop.Data.csproj": {
-                "projectPath": "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Data\\Nop.Data.csproj"
+              "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Data\\Nop.Data.csproj": {
+                "projectPath": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Data\\Nop.Data.csproj"
               }
             }
           }
@@ -261,14 +261,14 @@
         }
       }
     },
-    "F:\\Back-Up\\New folder\\trunk\\Plugins\\Nop.Plugin.Payments.Walletmix\\Nop.Plugin.Payments.Walletmix.csproj": {
+    "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Plugins\\Nop.Plugin.Payments.Walletmix\\Nop.Plugin.Payments.Walletmix.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\Back-Up\\New folder\\trunk\\Plugins\\Nop.Plugin.Payments.Walletmix\\Nop.Plugin.Payments.Walletmix.csproj",
+        "projectUniqueName": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Plugins\\Nop.Plugin.Payments.Walletmix\\Nop.Plugin.Payments.Walletmix.csproj",
         "projectName": "Nop.Plugin.Payments.Walletmix",
-        "projectPath": "F:\\Back-Up\\New folder\\trunk\\Plugins\\Nop.Plugin.Payments.Walletmix\\Nop.Plugin.Payments.Walletmix.csproj",
+        "projectPath": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Plugins\\Nop.Plugin.Payments.Walletmix\\Nop.Plugin.Payments.Walletmix.csproj",
         "packagesPath": "C:\\Users\\raihan.DESKTOP-8UAKMR3\\.nuget\\packages\\",
-        "outputPath": "F:\\Back-Up\\New folder\\trunk\\Plugins\\Nop.Plugin.Payments.Walletmix\\obj\\",
+        "outputPath": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Plugins\\Nop.Plugin.Payments.Walletmix\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -287,8 +287,8 @@
         "frameworks": {
           "netcoreapp2.1": {
             "projectReferences": {
-              "F:\\Back-Up\\New folder\\trunk\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj": {
-                "projectPath": "F:\\Back-Up\\New folder\\trunk\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj"
+              "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj": {
+                "projectPath": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj"
               }
             }
           }
@@ -323,14 +323,14 @@
         }
       }
     },
-    "F:\\Back-Up\\New folder\\trunk\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj": {
+    "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj": {
       "version": "4.1.0",
       "restore": {
-        "projectUniqueName": "F:\\Back-Up\\New folder\\trunk\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj",
+        "projectUniqueName": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj",
         "projectName": "Nop.Web.Framework",
-        "projectPath": "F:\\Back-Up\\New folder\\trunk\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj",
+        "projectPath": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj",
         "packagesPath": "C:\\Users\\raihan.DESKTOP-8UAKMR3\\.nuget\\packages\\",
-        "outputPath": "F:\\Back-Up\\New folder\\trunk\\Presentation\\Nop.Web.Framework\\obj\\",
+        "outputPath": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Presentation\\Nop.Web.Framework\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -349,14 +349,14 @@
         "frameworks": {
           "netcoreapp2.1": {
             "projectReferences": {
-              "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Core\\Nop.Core.csproj": {
-                "projectPath": "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Core\\Nop.Core.csproj"
+              "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Core\\Nop.Core.csproj": {
+                "projectPath": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Core\\Nop.Core.csproj"
               },
-              "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Data\\Nop.Data.csproj": {
-                "projectPath": "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Data\\Nop.Data.csproj"
+              "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Data\\Nop.Data.csproj": {
+                "projectPath": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Data\\Nop.Data.csproj"
               },
-              "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Services\\Nop.Services.csproj": {
-                "projectPath": "F:\\Back-Up\\New folder\\trunk\\Libraries\\Nop.Services\\Nop.Services.csproj"
+              "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Services\\Nop.Services.csproj": {
+                "projectPath": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Libraries\\Nop.Services\\Nop.Services.csproj"
               }
             }
           }

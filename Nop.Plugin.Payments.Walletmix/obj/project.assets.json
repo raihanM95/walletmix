@@ -14263,11 +14263,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\Back-Up\\New folder\\trunk\\Plugins\\Nop.Plugin.Payments.Walletmix\\Nop.Plugin.Payments.Walletmix.csproj",
+      "projectUniqueName": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Plugins\\Nop.Plugin.Payments.Walletmix\\Nop.Plugin.Payments.Walletmix.csproj",
       "projectName": "Nop.Plugin.Payments.Walletmix",
-      "projectPath": "F:\\Back-Up\\New folder\\trunk\\Plugins\\Nop.Plugin.Payments.Walletmix\\Nop.Plugin.Payments.Walletmix.csproj",
+      "projectPath": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Plugins\\Nop.Plugin.Payments.Walletmix\\Nop.Plugin.Payments.Walletmix.csproj",
       "packagesPath": "C:\\Users\\raihan.DESKTOP-8UAKMR3\\.nuget\\packages\\",
-      "outputPath": "F:\\Back-Up\\New folder\\trunk\\Plugins\\Nop.Plugin.Payments.Walletmix\\obj\\",
+      "outputPath": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Plugins\\Nop.Plugin.Payments.Walletmix\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -14286,8 +14286,8 @@
       "frameworks": {
         "netcoreapp2.1": {
           "projectReferences": {
-            "F:\\Back-Up\\New folder\\trunk\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj": {
-              "projectPath": "F:\\Back-Up\\New folder\\trunk\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj"
+            "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj": {
+              "projectPath": "F:\\SVN PROJECTS\\Nop_Zeils\\trunk\\Presentation\\Nop.Web.Framework\\Nop.Web.Framework.csproj"
             }
           }
         }

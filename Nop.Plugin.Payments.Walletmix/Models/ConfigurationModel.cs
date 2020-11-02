@@ -43,11 +43,11 @@ namespace Nop.Plugin.Payments.Walletmix.Models
         public string AccessAppKey { get; set; }
         public bool AccessAppKey_OverrideForStore { get; set; }
 
-        [NopResourceDisplayName("Plugins.Payments.PayPalStandard.Fields.AdditionalFee")]
+        [NopResourceDisplayName("Plugins.Payments.Walletmix.Fields.AdditionalFee")]
         public decimal AdditionalFee { get; set; }
         public bool AdditionalFee_OverrideForStore { get; set; }
 
-        [NopResourceDisplayName("Plugins.Payments.PayPalStandard.Fields.AdditionalFeePercentage")]
+        [NopResourceDisplayName("Plugins.Payments.Walletmix.Fields.AdditionalFeePercentage")]
         public bool AdditionalFeePercentage { get; set; }
         public bool AdditionalFeePercentage_OverrideForStore { get; set; }
     }

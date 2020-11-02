@@ -396,7 +396,7 @@ namespace Nop.Plugin.Payments.Walletmix
                     //queryParameters = queryParameters.Where(parameter => !string.IsNullOrEmpty(parameter.Value))
                     //    .ToDictionary(parameter => parameter.Key, parameter => parameter.Value);
 
-                    var url = responseModel.BankPaymentURL + "/" + responseModel.Token;
+                    var url = responseModel.BankPaymentURL + "/" + responseModel2.Token;
                     _httpContextAccessor.HttpContext.Response.Redirect(url);
                 }
             }

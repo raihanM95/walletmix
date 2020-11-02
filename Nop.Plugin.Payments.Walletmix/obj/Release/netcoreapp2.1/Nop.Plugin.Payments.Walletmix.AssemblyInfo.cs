@@ -11,9 +11,9 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("Nop Solutions, Ltd")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("Mediasoft Data Systems Ltd.")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
-[assembly: System.Reflection.AssemblyCopyrightAttribute("Copyright © Nop Solutions, Ltd")]
+[assembly: System.Reflection.AssemblyCopyrightAttribute("Copyright © Mediasoft Data Systems Ltd.")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("Nop.Plugin.Payments.Walletmix")]
