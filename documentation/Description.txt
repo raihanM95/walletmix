@@ -1,0 +1,29 @@
+Name: Walletmix Payment
+
+
+Short description:
+
+With Walletmix Checkout featuring Smart Payment Buttons (Walletmix Smart Buttons) on nopCommerce, you can automatically show your shoppers relevant payment methods designed to help you increase sales, including Walletmix.
+
+
+Full description:
+
+Walletmix payment gateway allows you to merchandise your products or services online and automatically process credit cards, debit cards or other forms of payment. Walletmix payment gateway service includes security measures that verify each credit card number and intercept potential criminal attempts before a transaction takes place. It has everything from merchant accounts to customized web stores. Walletmix payment gateway is ideal for customers with online wallets. It provides a handful of credit card processing solutions ideal for web and traditional business models.
+
+
+Hyperlink or instructions to download source code:
+
+https://github.com/raihanM95/walletmix
+
+
+Hyperlink or instructions to download a "ready to deploy" package:
+
+Installation
+1.  Download plugin extension.
+2.  Go to Dashborad » Configuration » Plugins and upload the plugin zip folder.
+3.  Install Walletmix plugin.
+
+Configuration
+1.  Go to Walletmix configuration page.
+2.  Put Walletmix provided creadentials.
+3.  Save configuration.
