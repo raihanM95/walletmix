@@ -31,3 +31,5 @@ Walletmix payment gateway allows you to merchandise your products or services on
     * Go to Walletmix configuration page
     * Put Walletmix provided creadentials
     * Save configuration
+
+<img src="documentation/documentation.PNG" alt="Screen"/>
