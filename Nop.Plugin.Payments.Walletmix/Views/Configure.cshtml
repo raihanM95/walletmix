@@ -6,17 +6,6 @@
 
 @await Component.InvokeAsync("StoreScopeConfiguration")
 
-@*<script>
-	$(document).ready(function () {
-        $("#@Html.IdFor(model => model.PassProductNamesAndTotals)").click(togglePassProductNamesAndTotals);
-	    togglePassProductNamesAndTotals();
-	});
-
-    function togglePassProductNamesAndTotals() {
-        warningValidation('@Url.Action("RoundingWarning", "PaymentPayPalStandard")', '@Html.NameFor(model => model.PassProductNamesAndTotals)',
-            { passProductNamesAndTotals: $('#@Html.IdFor(model => model.PassProductNamesAndTotals)').is(':checked') });
-    }
-</script>*@
 
 <form asp-controller="PaymentWalletmix" asp-action="Configure" method="post">
     <div class="panel-group">

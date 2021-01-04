@@ -4,14 +4,16 @@ using Newtonsoft.Json;
 using Nop.Core;
 using Nop.Core.Domain.Directory;
 using Nop.Core.Domain.Orders;
-using Nop.Core.Plugins;
 using Nop.Plugin.Payments.Walletmix.Models;
+using Nop.Services.Catalog;
 using Nop.Services.Common;
 using Nop.Services.Configuration;
+using Nop.Services.Customers;
 using Nop.Services.Directory;
 using Nop.Services.Localization;
 using Nop.Services.Orders;
 using Nop.Services.Payments;
+using Nop.Services.Plugins;
 using Nop.Services.Tax;
 using System;
 using System.Collections.Generic;
@@ -32,12 +34,16 @@ namespace Nop.Plugin.Payments.Walletmix
         #region Fields
 
         private readonly CurrencySettings _currencySettings;
+        private readonly IAddressService _addressService;
         private readonly ICheckoutAttributeParser _checkoutAttributeParser;
         private readonly ICurrencyService _currencyService;
+        private readonly ICustomerService _customerService;
         private readonly IGenericAttributeService _genericAttributeService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILocalizationService _localizationService;
+        private readonly IOrderService _orderService;
         private readonly IPaymentService _paymentService;
+        private readonly IProductService _productService;
         private readonly ISettingService _settingService;
         private readonly ITaxService _taxService;
         private readonly IWebHelper _webHelper;
@@ -50,12 +56,16 @@ namespace Nop.Plugin.Payments.Walletmix
         #region Ctor
 
         public WalletmixPaymentProcessor(CurrencySettings currencySettings,
+            IAddressService addressService,
             ICheckoutAttributeParser checkoutAttributeParser,
             ICurrencyService currencyService,
+            ICustomerService customerService,
             IGenericAttributeService genericAttributeService,
             IHttpContextAccessor httpContextAccessor,
             ILocalizationService localizationService,
+            IOrderService orderService,
             IPaymentService paymentService,
+            IProductService productService,
             ISettingService settingService,
             ITaxService taxService,
             IWebHelper webHelper,
@@ -63,19 +73,23 @@ namespace Nop.Plugin.Payments.Walletmix
 
             IStoreContext storeContext)
         {
-            this._currencySettings = currencySettings;
-            this._checkoutAttributeParser = checkoutAttributeParser;
-            this._currencyService = currencyService;
-            this._genericAttributeService = genericAttributeService;
-            this._httpContextAccessor = httpContextAccessor;
-            this._localizationService = localizationService;
-            this._paymentService = paymentService;
-            this._settingService = settingService;
-            this._taxService = taxService;
-            this._webHelper = webHelper;
-            this._walletmixPaymentSettings = walletmixPaymentSettings;
+            _currencySettings = currencySettings;
+            _addressService = addressService;
+            _checkoutAttributeParser = checkoutAttributeParser;
+            _currencyService = currencyService;
+            _customerService = customerService;
+            _genericAttributeService = genericAttributeService;
+            _httpContextAccessor = httpContextAccessor;
+            _localizationService = localizationService;
+            _orderService = orderService;
+            _paymentService = paymentService;
+            _productService = productService;
+            _settingService = settingService;
+            _taxService = taxService;
+            _webHelper = webHelper;
+            _walletmixPaymentSettings = walletmixPaymentSettings;
 
-            this._storeContext = storeContext;
+            _storeContext = storeContext;
         }
 
         #endregion Ctor
@@ -94,51 +108,6 @@ namespace Nop.Plugin.Payments.Walletmix
         }
         
         /// <summary>
-        /// Gets PDT details
-        /// </summary>
-        /// <param name="tx">TX</param>
-        /// <param name="values">Values</param>
-        /// <param name="response">Response</param>
-        /// <returns>Result</returns>
-        //public bool GetPdtDetails(string tx, out Dictionary<string, string> values, out string response)
-        //{
-        //    var req = (HttpWebRequest)WebRequest.Create(GetWalletmixUrl());
-        //    req.Method = WebRequestMethods.Http.Post;
-        //    req.ContentType = MimeTypes.ApplicationXWwwFormUrlencoded;
-        //    //now Walletmix requires user-agent. otherwise, we can get 403 error
-        //    req.UserAgent = _httpContextAccessor.HttpContext.Request.Headers[HeaderNames.UserAgent];
-
-        //    var formContent = $"cmd=_notify-synch&at={_walletmixPaymentSettings.PdtToken}&tx={tx}";
-        //    req.ContentLength = formContent.Length;
-
-        //    using (var sw = new StreamWriter(req.GetRequestStream(), Encoding.ASCII))
-        //        sw.Write(formContent);
-
-        //    using (var sr = new StreamReader(req.GetResponse().GetResponseStream()))
-        //        response = WebUtility.UrlDecode(sr.ReadToEnd());
-
-        //    values = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        //    bool firstLine = true, success = false;
-        //    foreach (var l in response.Split('\n'))
-        //    {
-        //        var line = l.Trim();
-        //        if (firstLine)
-        //        {
-        //            success = line.Equals("SUCCESS", StringComparison.OrdinalIgnoreCase);
-        //            firstLine = false;
-        //        }
-        //        else
-        //        {
-        //            var equalPox = line.IndexOf('=');
-        //            if (equalPox >= 0)
-        //                values.Add(line.Substring(0, equalPox), line.Substring(equalPox + 1));
-        //        }
-        //    }
-
-        //    return success;
-        //}
-        
-        /// <summary>
         /// Create common query parameters for the request
         /// </summary>
         /// <param name="postProcessPaymentRequest">Payment info required for an order processing</param>
@@ -151,6 +120,10 @@ namespace Nop.Plugin.Payments.Walletmix
             //load settings for a chosen store scope
             var storeScope = _storeContext.ActiveStoreScopeConfiguration;
             var walletmixPaymentSettings = _settingService.LoadSetting<WalletmixPaymentSettings>(storeScope);
+
+            //choosing correct order address
+            var orderAddress = _addressService.GetAddressById(
+                (postProcessPaymentRequest.Order.PickupInStore ? postProcessPaymentRequest.Order.PickupAddressId : postProcessPaymentRequest.Order.ShippingAddressId) ?? 0);
 
             //base64 encode
             var options = Base64_Encode(walletmixPaymentSettings.AccessUsername, walletmixPaymentSettings.AccessPassword);
@@ -175,10 +148,10 @@ namespace Nop.Plugin.Payments.Walletmix
                 //["cancel_return"] = $"{storeLocation}Plugins/Walletmix/CancelOrder",
 
                 //shipping address
-                ["customer_name"] = postProcessPaymentRequest.Order.ShippingAddress?.FirstName + postProcessPaymentRequest.Order.ShippingAddress?.LastName,
-                ["customer_email"] = postProcessPaymentRequest.Order.ShippingAddress?.Email,
-                ["customer_add"] = postProcessPaymentRequest.Order.ShippingAddress?.Address1,
-                ["customer_phone"] = postProcessPaymentRequest.Order.ShippingAddress?.PhoneNumber,
+                ["customer_name"] = orderAddress?.FirstName + orderAddress?.LastName,
+                ["customer_email"] = orderAddress.Email,
+                ["customer_add"] = orderAddress?.Address1,
+                ["customer_phone"] = orderAddress?.PhoneNumber,
 
                 //product description //problem
                 ["product_desc"] = postProcessPaymentRequest.Order.OrderTotal.ToString(),
@@ -226,12 +199,14 @@ namespace Nop.Plugin.Payments.Walletmix
             var itemCount = 1;
 
             //add shopping cart items
-            foreach (var item in postProcessPaymentRequest.Order.OrderItems)
+            foreach (var item in _orderService.GetOrderItems(postProcessPaymentRequest.Order.Id))
             {
                 var roundedItemPrice = Math.Round(item.UnitPriceExclTax, 2);
 
+                var product = _productService.GetProductById(item.ProductId);
+
                 //add query parameters
-                parameters.Add($"item_name_{itemCount}", item.Product.Name);
+                parameters.Add($"item_name_{itemCount}", product.Name);
                 parameters.Add($"amount_{itemCount}", roundedItemPrice.ToString("0.00", CultureInfo.InvariantCulture));
                 parameters.Add($"quantity_{itemCount}", item.Quantity.ToString());
 
@@ -242,15 +217,20 @@ namespace Nop.Plugin.Payments.Walletmix
 
             //add checkout attributes as order items
             var checkoutAttributeValues = _checkoutAttributeParser.ParseCheckoutAttributeValues(postProcessPaymentRequest.Order.CheckoutAttributesXml);
-            foreach (var attributeValue in checkoutAttributeValues)
-            {
-                var attributePrice = _taxService.GetCheckoutAttributePrice(attributeValue, false, postProcessPaymentRequest.Order.Customer);
-                var roundedAttributePrice = Math.Round(attributePrice, 2);
+            var customer = _customerService.GetCustomerById(postProcessPaymentRequest.Order.CustomerId);
 
-                //add query parameters
-                if (attributeValue.CheckoutAttribute != null)
+            foreach (var (attribute, values) in checkoutAttributeValues)
+            {
+                foreach (var attributeValue in values)
                 {
-                    parameters.Add($"item_name_{itemCount}", attributeValue.CheckoutAttribute.Name);
+                    var attributePrice = _taxService.GetCheckoutAttributePrice(attribute, attributeValue, false, customer);
+                    var roundedAttributePrice = Math.Round(attributePrice, 2);
+
+                    //add query parameters
+                    if (attribute == null)
+                        continue;
+
+                    parameters.Add($"item_name_{itemCount}", attribute.Name);
                     parameters.Add($"amount_{itemCount}", roundedAttributePrice.ToString("0.00", CultureInfo.InvariantCulture));
                     parameters.Add($"quantity_{itemCount}", "1");
 

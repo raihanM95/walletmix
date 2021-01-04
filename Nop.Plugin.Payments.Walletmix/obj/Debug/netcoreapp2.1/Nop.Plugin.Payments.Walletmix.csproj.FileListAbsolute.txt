@@ -26,3 +26,5 @@ F:\Back-Up\New folder\trunk\Plugins\Nop.Plugin.Payments.Walletmix\obj\Debug\netc
 F:\Back-Up\New folder\trunk\Plugins\Nop.Plugin.Payments.Walletmix\obj\Debug\netcoreapp2.1\Nop.Plugin.Payments.Walletmix.csproj.CopyComplete
 F:\Back-Up\New folder\trunk\Plugins\Nop.Plugin.Payments.Walletmix\obj\Debug\netcoreapp2.1\Nop.Plugin.Payments.Walletmix.dll
 F:\Back-Up\New folder\trunk\Plugins\Nop.Plugin.Payments.Walletmix\obj\Debug\netcoreapp2.1\Nop.Plugin.Payments.Walletmix.pdb
+F:\SVN PROJECTS\nopSoft\Plugins\Nop.Plugin.Payments.Walletmix\obj\Debug\netcoreapp2.1\Nop.Plugin.Payments.Walletmix.dll
+F:\SVN PROJECTS\nopSoft\Plugins\Nop.Plugin.Payments.Walletmix\obj\Debug\netcoreapp2.1\Nop.Plugin.Payments.Walletmix.pdb

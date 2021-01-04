@@ -11,6 +11,7 @@ using Nop.Services.Common;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
 using Nop.Services.Logging;
+using Nop.Services.Messages;
 using Nop.Services.Orders;
 using Nop.Services.Payments;
 using Nop.Services.Security;
@@ -20,6 +21,7 @@ using Nop.Web.Framework.Mvc.Filters;
 
 namespace Nop.Plugin.Payments.Walletmix.Controllers
 {
+    [AutoValidateAntiforgeryToken]
     public class PaymentWalletmixController : BasePaymentController
     {
         #region Fields
@@ -34,6 +36,7 @@ namespace Nop.Plugin.Payments.Walletmix.Controllers
         private readonly ILocalizationService _localizationService;
         private readonly IStoreContext _storeContext;
         private readonly ILogger _logger;
+        private readonly INotificationService _notificationService;
         private readonly IWebHelper _webHelper;
         private readonly ShoppingCartSettings _shoppingCartSettings;
 
@@ -51,21 +54,23 @@ namespace Nop.Plugin.Payments.Walletmix.Controllers
             ILocalizationService localizationService,
             IStoreContext storeContext,
             ILogger logger,
+            INotificationService notificationService,
             IWebHelper webHelper,
             ShoppingCartSettings shoppingCartSettings)
         {
-            this._workContext = workContext;
-            this._settingService = settingService;
-            this._paymentService = paymentService;
-            this._orderService = orderService;
-            this._orderProcessingService = orderProcessingService;
-            this._permissionService = permissionService;
-            this._genericAttributeService = genericAttributeService;
-            this._localizationService = localizationService;
-            this._storeContext = storeContext;
-            this._logger = logger;
-            this._webHelper = webHelper;
-            this._shoppingCartSettings = shoppingCartSettings;
+            _workContext = workContext;
+            _settingService = settingService;
+            _paymentService = paymentService;
+            _orderService = orderService;
+            _orderProcessingService = orderProcessingService;
+            _permissionService = permissionService;
+            _genericAttributeService = genericAttributeService;
+            _localizationService = localizationService;
+            _storeContext = storeContext;
+            _logger = logger;
+            _notificationService = notificationService;
+            _webHelper = webHelper;
+            _shoppingCartSettings = shoppingCartSettings;
         }
 
         #endregion
@@ -118,7 +123,6 @@ namespace Nop.Plugin.Payments.Walletmix.Controllers
 
         [HttpPost]
         [AuthorizeAdmin]
-        [AdminAntiForgery]
         [Area(AreaNames.Admin)]
         public IActionResult Configure(ConfigurationModel model)
         {
@@ -163,7 +167,7 @@ namespace Nop.Plugin.Payments.Walletmix.Controllers
             //now clear settings cache
             _settingService.ClearCache();
 
-            SuccessNotification(_localizationService.GetResource("Admin.Plugins.Saved"));
+            _notificationService.SuccessNotification(_localizationService.GetResource("Admin.Plugins.Saved"));
 
             return Configure();
         }
@@ -182,425 +186,7 @@ namespace Nop.Plugin.Payments.Walletmix.Controllers
 
             return Json(new { Result = string.Empty });
         }
-        /*
-        public IActionResult PDTHandler()
-        {
-            var tx = _webHelper.QueryString<string>("tx");
-
-            var processor = _paymentService.LoadPaymentMethodBySystemName("Payments.Walletmix") as WalletmixPaymentProcessor;
-            if (processor == null ||
-                !_paymentService.IsPaymentMethodActive(processor) || !processor.PluginDescriptor.Installed)
-                throw new NopException("Walletmix Standard module cannot be loaded");
-
-            if (processor.GetPdtDetails(tx, out Dictionary<string, string> values, out string response))
-            {
-                values.TryGetValue("custom", out string orderNumber);
-                var orderNumberGuid = Guid.Empty;
-                try
-                {
-                    orderNumberGuid = new Guid(orderNumber);
-                }
-                catch { }
-                var order = _orderService.GetOrderByGuid(orderNumberGuid);
-                if (order != null)
-                {
-                    var mc_gross = decimal.Zero;
-                    try
-                    {
-                        mc_gross = decimal.Parse(values["mc_gross"], new CultureInfo("en-US"));
-                    }
-                    catch (Exception exc)
-                    {
-                        _logger.Error("Walletmix PDT. Error getting mc_gross", exc);
-                    }
-
-                    values.TryGetValue("payer_status", out string payer_status);
-                    values.TryGetValue("payment_status", out string payment_status);
-                    values.TryGetValue("pending_reason", out string pending_reason);
-                    values.TryGetValue("mc_currency", out string mc_currency);
-                    values.TryGetValue("txn_id", out string txn_id);
-                    values.TryGetValue("payment_type", out string payment_type);
-                    values.TryGetValue("payer_id", out string payer_id);
-                    values.TryGetValue("receiver_id", out string receiver_id);
-                    values.TryGetValue("invoice", out string invoice);
-                    values.TryGetValue("payment_fee", out string payment_fee);
-
-                    var sb = new StringBuilder();
-                    sb.AppendLine("Walletmix PDT:");
-                    sb.AppendLine("mc_gross: " + mc_gross);
-                    sb.AppendLine("Payer status: " + payer_status);
-                    sb.AppendLine("Payment status: " + payment_status);
-                    sb.AppendLine("Pending reason: " + string.Empty);
-                    sb.AppendLine("mc_currency: " + mc_currency);
-                    sb.AppendLine("txn_id: " + txn_id);
-                    sb.AppendLine("payment_type: " + payment_type);
-                    sb.AppendLine("payer_id: " + payer_id);
-                    sb.AppendLine("receiver_id: " + receiver_id);
-                    sb.AppendLine("invoice: " + invoice);
-                    sb.AppendLine("payment_fee: " + payment_fee);
-
-                    //var newPaymentStatus = PayPalHelper.GetPaymentStatus(payment_status, string.Empty);
-                    //sb.AppendLine("New payment status: " + newPaymentStatus);
-
-                    //order note
-                    order.OrderNotes.Add(new OrderNote
-                    {
-                        Note = sb.ToString(),
-                        DisplayToCustomer = false,
-                        CreatedOnUtc = DateTime.UtcNow
-                    });
-                    _orderService.UpdateOrder(order);
-
-                    //validate order total
-                    var orderTotalSentToPayPal = _genericAttributeService.GetAttribute<decimal?>(order, PayPalHelper.OrderTotalSentToPayPal);
-                    if (orderTotalSentToPayPal.HasValue && mc_gross != orderTotalSentToPayPal.Value)
-                    {
-                        var errorStr =
-                            $"PayPal PDT. Returned order total {mc_gross} doesn't equal order total {order.OrderTotal}. Order# {order.Id}.";
-                        //log
-                        _logger.Error(errorStr);
-                        //order note
-                        order.OrderNotes.Add(new OrderNote
-                        {
-                            Note = errorStr,
-                            DisplayToCustomer = false,
-                            CreatedOnUtc = DateTime.UtcNow
-                        });
-                        _orderService.UpdateOrder(order);
-
-                        return RedirectToAction("Index", "Home", new { area = "" });
-                    }
-                    //clear attribute
-                    if (orderTotalSentToPayPal.HasValue)
-                        _genericAttributeService.SaveAttribute<decimal?>(order, PayPalHelper.OrderTotalSentToPayPal, null);
-
-                    //mark order as paid
-                    if (newPaymentStatus == PaymentStatus.Paid)
-                    {
-                        if (_orderProcessingService.CanMarkOrderAsPaid(order))
-                        {
-                            order.AuthorizationTransactionId = txn_id;
-                            _orderService.UpdateOrder(order);
-
-                            _orderProcessingService.MarkOrderAsPaid(order);
-                        }
-                    }
-                }
-
-                return RedirectToRoute("CheckoutCompleted", new { orderId = order.Id });
-            }
-            else
-            {
-                var orderNumber = string.Empty;
-                values.TryGetValue("custom", out orderNumber);
-                var orderNumberGuid = Guid.Empty;
-                try
-                {
-                    orderNumberGuid = new Guid(orderNumber);
-                }
-                catch { }
-                var order = _orderService.GetOrderByGuid(orderNumberGuid);
-                if (order != null)
-                {
-                    //order note
-                    order.OrderNotes.Add(new OrderNote
-                    {
-                        Note = "PayPal PDT failed. " + response,
-                        DisplayToCustomer = false,
-                        CreatedOnUtc = DateTime.UtcNow
-                    });
-                    _orderService.UpdateOrder(order);
-                }
-                return RedirectToAction("Index", "Home", new { area = "" });
-            }
-        }
-
-        public IActionResult IPNHandler()
-        {
-            byte[] parameters;
-            using (var stream = new MemoryStream())
-            {
-                this.Request.Body.CopyTo(stream);
-                parameters = stream.ToArray();
-            }
-            var strRequest = Encoding.ASCII.GetString(parameters);
-
-            var processor = _paymentService.LoadPaymentMethodBySystemName("Payments.PayPalStandard") as PayPalStandardPaymentProcessor;
-            if (processor == null ||
-                !_paymentService.IsPaymentMethodActive(processor) || !processor.PluginDescriptor.Installed)
-                throw new NopException("PayPal Standard module cannot be loaded");
-
-            if (processor.VerifyIpn(strRequest, out Dictionary<string, string> values))
-            {
-                #region values
-                var mc_gross = decimal.Zero;
-                try
-                {
-                    mc_gross = decimal.Parse(values["mc_gross"], new CultureInfo("en-US"));
-                }
-                catch { }
-
-                values.TryGetValue("payer_status", out string payer_status);
-                values.TryGetValue("payment_status", out string payment_status);
-                values.TryGetValue("pending_reason", out string pending_reason);
-                values.TryGetValue("mc_currency", out string mc_currency);
-                values.TryGetValue("txn_id", out string txn_id);
-                values.TryGetValue("txn_type", out string txn_type);
-                values.TryGetValue("rp_invoice_id", out string rp_invoice_id);
-                values.TryGetValue("payment_type", out string payment_type);
-                values.TryGetValue("payer_id", out string payer_id);
-                values.TryGetValue("receiver_id", out string receiver_id);
-                values.TryGetValue("invoice", out string _);
-                values.TryGetValue("payment_fee", out string payment_fee);
-
-                #endregion
-
-                var sb = new StringBuilder();
-                sb.AppendLine("PayPal IPN:");
-                foreach (var kvp in values)
-                {
-                    sb.AppendLine(kvp.Key + ": " + kvp.Value);
-                }
-
-                var newPaymentStatus = PayPalHelper.GetPaymentStatus(payment_status, pending_reason);
-                sb.AppendLine("New payment status: " + newPaymentStatus);
-
-                switch (txn_type)
-                {
-                    case "recurring_payment_profile_created":
-                        //do nothing here
-                        break;
-                    #region Recurring payment
-                    case "recurring_payment":
-                        {
-                            var orderNumberGuid = Guid.Empty;
-                            try
-                            {
-                                orderNumberGuid = new Guid(rp_invoice_id);
-                            }
-                            catch
-                            {
-                            }
-
-                            var initialOrder = _orderService.GetOrderByGuid(orderNumberGuid);
-                            if (initialOrder != null)
-                            {
-                                var recurringPayments = _orderService.SearchRecurringPayments(initialOrderId: initialOrder.Id);
-                                foreach (var rp in recurringPayments)
-                                {
-                                    switch (newPaymentStatus)
-                                    {
-                                        case PaymentStatus.Authorized:
-                                        case PaymentStatus.Paid:
-                                            {
-                                                var recurringPaymentHistory = rp.RecurringPaymentHistory;
-                                                if (!recurringPaymentHistory.Any())
-                                                {
-                                                    //first payment
-                                                    var rph = new RecurringPaymentHistory
-                                                    {
-                                                        RecurringPaymentId = rp.Id,
-                                                        OrderId = initialOrder.Id,
-                                                        CreatedOnUtc = DateTime.UtcNow
-                                                    };
-                                                    rp.RecurringPaymentHistory.Add(rph);
-                                                    _orderService.UpdateRecurringPayment(rp);
-                                                }
-                                                else
-                                                {
-                                                    //next payments
-                                                    var processPaymentResult = new ProcessPaymentResult
-                                                    {
-                                                        NewPaymentStatus = newPaymentStatus
-                                                    };
-                                                    if (newPaymentStatus == PaymentStatus.Authorized)
-                                                        processPaymentResult.AuthorizationTransactionId = txn_id;
-                                                    else
-                                                        processPaymentResult.CaptureTransactionId = txn_id;
-
-                                                    _orderProcessingService.ProcessNextRecurringPayment(rp, processPaymentResult);
-                                                }
-                                            }
-                                            break;
-                                        case PaymentStatus.Voided:
-                                            //failed payment
-                                            var failedPaymentResult = new ProcessPaymentResult
-                                            {
-                                                Errors = new[] { $"PayPal IPN. Recurring payment is {payment_status} ." },
-                                                RecurringPaymentFailed = true
-                                            };
-                                            _orderProcessingService.ProcessNextRecurringPayment(rp, failedPaymentResult);
-                                            break;
-                                    }
-                                }
-
-                                //this.OrderService.InsertOrderNote(newOrder.OrderId, sb.ToString(), DateTime.UtcNow);
-                                _logger.Information("PayPal IPN. Recurring info", new NopException(sb.ToString()));
-                            }
-                            else
-                            {
-                                _logger.Error("PayPal IPN. Order is not found", new NopException(sb.ToString()));
-                            }
-                        }
-                        break;
-                    case "recurring_payment_failed":
-                        if (Guid.TryParse(rp_invoice_id, out Guid orderGuid))
-                        {
-                            var initialOrder = _orderService.GetOrderByGuid(orderGuid);
-                            if (initialOrder != null)
-                            {
-                                var recurringPayment = _orderService.SearchRecurringPayments(initialOrderId: initialOrder.Id).FirstOrDefault();
-                                //failed payment
-                                if (recurringPayment != null)
-                                    _orderProcessingService.ProcessNextRecurringPayment(recurringPayment, new ProcessPaymentResult { Errors = new[] { txn_type }, RecurringPaymentFailed = true });
-                            }
-                        }
-                        break;
-                    #endregion
-                    default:
-                        #region Standard payment
-                        {
-                            values.TryGetValue("custom", out string orderNumber);
-                            var orderNumberGuid = Guid.Empty;
-                            try
-                            {
-                                orderNumberGuid = new Guid(orderNumber);
-                            }
-                            catch
-                            {
-                            }
-
-                            var order = _orderService.GetOrderByGuid(orderNumberGuid);
-                            if (order != null)
-                            {
-
-                                //order note
-                                order.OrderNotes.Add(new OrderNote
-                                {
-                                    Note = sb.ToString(),
-                                    DisplayToCustomer = false,
-                                    CreatedOnUtc = DateTime.UtcNow
-                                });
-                                _orderService.UpdateOrder(order);
-
-                                switch (newPaymentStatus)
-                                {
-                                    case PaymentStatus.Pending:
-                                        {
-                                        }
-                                        break;
-                                    case PaymentStatus.Authorized:
-                                        {
-                                            //validate order total
-                                            if (Math.Round(mc_gross, 2).Equals(Math.Round(order.OrderTotal, 2)))
-                                            {
-                                                //valid
-                                                if (_orderProcessingService.CanMarkOrderAsAuthorized(order))
-                                                {
-                                                    _orderProcessingService.MarkAsAuthorized(order);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                //not valid
-                                                var errorStr =
-                                                    $"PayPal IPN. Returned order total {mc_gross} doesn't equal order total {order.OrderTotal}. Order# {order.Id}.";
-                                                //log
-                                                _logger.Error(errorStr);
-                                                //order note
-                                                order.OrderNotes.Add(new OrderNote
-                                                {
-                                                    Note = errorStr,
-                                                    DisplayToCustomer = false,
-                                                    CreatedOnUtc = DateTime.UtcNow
-                                                });
-                                                _orderService.UpdateOrder(order);
-                                            }
-                                        }
-                                        break;
-                                    case PaymentStatus.Paid:
-                                        {
-                                            //validate order total
-                                            if (Math.Round(mc_gross, 2).Equals(Math.Round(order.OrderTotal, 2)))
-                                            {
-                                                //valid
-                                                if (_orderProcessingService.CanMarkOrderAsPaid(order))
-                                                {
-                                                    order.AuthorizationTransactionId = txn_id;
-                                                    _orderService.UpdateOrder(order);
-
-                                                    _orderProcessingService.MarkOrderAsPaid(order);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                //not valid
-                                                var errorStr =
-                                                    $"PayPal IPN. Returned order total {mc_gross} doesn't equal order total {order.OrderTotal}. Order# {order.Id}.";
-                                                //log
-                                                _logger.Error(errorStr);
-                                                //order note
-                                                order.OrderNotes.Add(new OrderNote
-                                                {
-                                                    Note = errorStr,
-                                                    DisplayToCustomer = false,
-                                                    CreatedOnUtc = DateTime.UtcNow
-                                                });
-                                                _orderService.UpdateOrder(order);
-                                            }
-                                        }
-                                        break;
-                                    case PaymentStatus.Refunded:
-                                        {
-                                            var totalToRefund = Math.Abs(mc_gross);
-                                            if (totalToRefund > 0 && Math.Round(totalToRefund, 2).Equals(Math.Round(order.OrderTotal, 2)))
-                                            {
-                                                //refund
-                                                if (_orderProcessingService.CanRefundOffline(order))
-                                                {
-                                                    _orderProcessingService.RefundOffline(order);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                //partial refund
-                                                if (_orderProcessingService.CanPartiallyRefundOffline(order, totalToRefund))
-                                                {
-                                                    _orderProcessingService.PartiallyRefundOffline(order, totalToRefund);
-                                                }
-                                            }
-                                        }
-                                        break;
-                                    case PaymentStatus.Voided:
-                                        {
-                                            if (_orderProcessingService.CanVoidOffline(order))
-                                            {
-                                                _orderProcessingService.VoidOffline(order);
-                                            }
-                                        }
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                            else
-                            {
-                                _logger.Error("PayPal IPN. Order is not found", new NopException(sb.ToString()));
-                            }
-                        }
-                        #endregion
-                        break;
-                }
-            }
-            else
-            {
-                _logger.Error("PayPal IPN failed.", new NopException(strRequest));
-            }
-
-            //nothing should be rendered to visitor
-            return Content("");
-        }
-        */
+        
         public IActionResult CancelOrder()
         {
             var order = _orderService.SearchOrders(storeId: _storeContext.CurrentStore.Id,

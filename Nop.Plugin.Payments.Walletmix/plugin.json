@@ -3,8 +3,8 @@
   "FriendlyName": "Walletmix",
   "SystemName": "Payments.Walletmix",
   "Version": "1.01",
-  "SupportedVersions": [ "4.10" ],
-  "Author": "Raihan Mahmud",
+  "SupportedVersions": [ "4.30" ],
+  "Author": "Mediasoft Team",
   "DisplayOrder": 1,
   "FileName": "Nop.Plugin.Payments.Walletmix.dll",
   "Description": "This plugin allows paying with Walletmix"

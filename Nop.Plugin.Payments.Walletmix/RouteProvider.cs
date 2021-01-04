@@ -4,7 +4,7 @@ using Nop.Web.Framework.Mvc.Routing;
 
 namespace Nop.Plugin.Payments.Walletmix
 {
-    public partial class RouteProvider : IRouteProvider
+    public partial class RouteProvider
     {
         /// <summary>
         /// Register routes

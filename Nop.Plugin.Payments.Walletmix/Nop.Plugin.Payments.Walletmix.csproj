@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <Copyright>Copyright © Mediasoft Data Systems Ltd.</Copyright>
     <Company>Mediasoft Data Systems Ltd.</Company>
-    <Authors>Raihan Mahmud</Authors>
+    <Authors>Mediasoft Team</Authors>
     <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>http://www.nopcommerce.com/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/raihanM95/walletmix</RepositoryUrl>
