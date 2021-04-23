@@ -12,7 +12,7 @@
     <img src="https://img.shields.io/github/release/raihanM95/walletmix" alt="release">
   </a>
   <a href="https://github.com/raihanM95/walletmix/blob/main/LICENSE">
-    <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="licenses">
+    <img src="https://img.shields.io/badge/License-Apache-yellow.svg" alt="licenses">
   </a>
 </p>
 
